@@ -35,7 +35,7 @@ describe('OpenAI', function () {
             let topics = [
                 "sport", "cars", "schools"
             ]
-            let template = `Make me a sentence about {{topic}}.`
+            let template = `Make me a 10 word sentence about {{topic}}.`
             let allResponses = await Promise.all(topics.map(topic => {
                 let prompt = template.replaceAll("{{topic}}", topic);
                 return api.prompt({

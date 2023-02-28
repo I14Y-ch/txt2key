@@ -1,59 +1,59 @@
 [
     {
-        "id": "cmpl-6oxMLDjMgN7k2C0KIOHCNhXeYULxD",
+        "id": "cmpl-6oxVYvjYT9efTcpMcJykNBfGmi90l",
         "object": "text_completion",
-        "created": 1677602597,
+        "created": 1677603168,
         "model": "text-davinci-003",
         "choices": [
             {
-                "text": "\n\nPlaying sports is a great way to stay",
+                "text": "\n\nPlaying sports is fun and exciting!",
                 "index": 0,
                 "logprobs": null,
-                "finish_reason": "length"
+                "finish_reason": "stop"
             }
         ],
         "usage": {
-            "prompt_tokens": 7,
-            "completion_tokens": 10,
-            "total_tokens": 17
+            "prompt_tokens": 9,
+            "completion_tokens": 9,
+            "total_tokens": 18
         }
     },
     {
-        "id": "cmpl-6oxMMjtxWF3O7eP8rZmtXjtQ8xUgo",
+        "id": "cmpl-6oxVYVh98IQVjX0WihGhLa403ZeBZ",
         "object": "text_completion",
-        "created": 1677602598,
+        "created": 1677603168,
         "model": "text-davinci-003",
         "choices": [
             {
-                "text": "\n\nCars are a great way to get",
+                "text": "\n\nCars are a great way to travel.",
                 "index": 0,
                 "logprobs": null,
-                "finish_reason": "length"
+                "finish_reason": "stop"
             }
         ],
         "usage": {
-            "prompt_tokens": 7,
-            "completion_tokens": 10,
-            "total_tokens": 17
+            "prompt_tokens": 9,
+            "completion_tokens": 11,
+            "total_tokens": 20
         }
     },
     {
-        "id": "cmpl-6oxMLvJbxuu6xcw0dJrEULqqiaug2",
+        "id": "cmpl-6oxVYvFknXWASvYvtDKCPI5mpxYzd",
         "object": "text_completion",
-        "created": 1677602597,
+        "created": 1677603168,
         "model": "text-davinci-003",
         "choices": [
             {
-                "text": "\n\nSchools provide a safe and nurturing environment",
+                "text": "\n\nSchools provide knowledge and opportunity for growth.",
                 "index": 0,
                 "logprobs": null,
-                "finish_reason": "length"
+                "finish_reason": "stop"
             }
         ],
         "usage": {
-            "prompt_tokens": 7,
-            "completion_tokens": 10,
-            "total_tokens": 17
+            "prompt_tokens": 9,
+            "completion_tokens": 11,
+            "total_tokens": 20
         }
     }
 ]
