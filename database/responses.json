@@ -1,0 +1,59 @@
+[
+    {
+        "id": "cmpl-6p0FPZFrbLSePfXfymYlctZa0dxNa",
+        "object": "text_completion",
+        "created": 1677613699,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nBabor Creme ist ein wahres Wundermittel für Ihre Schönheit. Es ist eine luxuriöse, reichhaltige Creme, die Ihre Haut mit Feuchtigkeit versorgt und sie weich und geschmeidig macht. Die Creme enthält natürliche Inhaltsstoffe, die Ihre Haut n",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 29,
+            "completion_tokens": 100,
+            "total_tokens": 129
+        }
+    },
+    {
+        "id": "cmpl-6p0FQBHXexvMQwkIH9Qxty9BXd8ws",
+        "object": "text_completion",
+        "created": 1677613700,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nBabor Make-up ist ein einzigartiges Produkt, das Ihnen eine natürliche Schönheit verleiht. Es ist eine Kombination aus hochwertigen Inhaltsstoffen und modernster Technologie, die Ihnen ein makelloses Finish und ein strahlendes Aussehen verleiht. Es ist ein Produkt,",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 30,
+            "completion_tokens": 100,
+            "total_tokens": 130
+        }
+    },
+    {
+        "id": "cmpl-6p0FQwcL4TYl4O0okk8AvXxxybiha",
+        "object": "text_completion",
+        "created": 1677613700,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nBabor HSR Lifting ist ein revolutionäres Produkt, das Ihnen ein jugendliches und strahlendes Aussehen verleiht. Es ist eine einzigartige Kombination aus innovativen Wirkstoffen, die Ihre Haut straffen und glätten, während sie gleichzeitig die natürliche Schönheit Ih",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 31,
+            "completion_tokens": 100,
+            "total_tokens": 131
+        }
+    }
+]

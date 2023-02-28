@@ -10,7 +10,7 @@ async function prompt(options){
         model: "text-davinci-003",
         prompt: "Say this is a test",
         temperature: 0,
-        max_tokens: 30,
+        max_tokens: 100,
         ...options
     });
     return response;

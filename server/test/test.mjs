@@ -31,11 +31,14 @@ describe('OpenAI', function () {
             assert.equal(response.data.choices[0].text, "\n\nThis is indeed a test");
         });
         it('Should be able to invoke the AI in batch', async function () {
-            this.timeout(5 * 1000);
+            this.timeout(20 * 1000);
             let topics = [
-                "sport", "cars", "schools"
+                "Babor creame", "Babor makup", "Babor HSR Lifting"
             ]
-            let template = `Make me a 10 word sentence about {{topic}}.`
+            let gelegenheiten = [
+                "Dating", "Fine Dinner", "Wedding"
+            ]
+            let template = `Make me a 150 word sentence about beauty, convincing me to buy the product {{topic}}. Please give me the output text in German. Tell me why it is the for {{gelegenheit}}`
             let allResponses = await Promise.all(topics.map(topic => {
                 let prompt = template.replaceAll("{{topic}}", topic);
                 return api.prompt({
