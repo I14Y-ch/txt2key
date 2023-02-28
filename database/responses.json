@@ -1,0 +1,59 @@
+[
+    {
+        "id": "cmpl-6oxMLDjMgN7k2C0KIOHCNhXeYULxD",
+        "object": "text_completion",
+        "created": 1677602597,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nPlaying sports is a great way to stay",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 7,
+            "completion_tokens": 10,
+            "total_tokens": 17
+        }
+    },
+    {
+        "id": "cmpl-6oxMMjtxWF3O7eP8rZmtXjtQ8xUgo",
+        "object": "text_completion",
+        "created": 1677602598,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nCars are a great way to get",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 7,
+            "completion_tokens": 10,
+            "total_tokens": 17
+        }
+    },
+    {
+        "id": "cmpl-6oxMLvJbxuu6xcw0dJrEULqqiaug2",
+        "object": "text_completion",
+        "created": 1677602597,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nSchools provide a safe and nurturing environment",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 7,
+            "completion_tokens": 10,
+            "total_tokens": 17
+        }
+    }
+]
