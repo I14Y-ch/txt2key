@@ -1,0 +1,59 @@
+[
+    {
+        "id": "cmpl-6pFAUB2EocpsxCTqko2q3BfW2bP36",
+        "object": "text_completion",
+        "created": 1677671054,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nBabor Creme ist die perfekte Wahl für {{gelegenheit}}. Es ist eine luxuriöse, hochwertige Creme, die Ihre Haut mit Feuchtigkeit versorgt und sie weich und geschmeidig macht. Die Creme enthält natürliche Inhaltsstoffe, die Ihre Haut nähren",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 42,
+            "completion_tokens": 100,
+            "total_tokens": 142
+        }
+    },
+    {
+        "id": "cmpl-6pFAVCykgqhBtzUGVnQNn6VhYkFmX",
+        "object": "text_completion",
+        "created": 1677671055,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nBabor Make-up ist die perfekte Wahl für {{Gelegenheit}}. Es bietet eine luxuriöse Textur und eine reiche Farbpalette, die Ihnen ermöglicht, Ihren Look zu individualisieren und Ihre natürliche Schönheit zu betonen. Mit Babor Make-up können Sie Ihren Look auf e",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 43,
+            "completion_tokens": 100,
+            "total_tokens": 143
+        }
+    },
+    {
+        "id": "cmpl-6pFAVE30xpQgCDptnVcI7NJv0QEeZ",
+        "object": "text_completion",
+        "created": 1677671055,
+        "model": "text-davinci-003",
+        "choices": [
+            {
+                "text": "\n\nBabor HSR Lifting ist die perfekte Wahl für {{gelegenheit}}. Es ist eine innovative Anti-Aging-Behandlung, die Ihnen ein jugendlicheres Aussehen verleiht. Es hilft, die Haut zu straffen und Falten zu reduzieren, während es die Haut mit Feuchtigkeit versorgt. Es",
+                "index": 0,
+                "logprobs": null,
+                "finish_reason": "length"
+            }
+        ],
+        "usage": {
+            "prompt_tokens": 44,
+            "completion_tokens": 100,
+            "total_tokens": 144
+        }
+    }
+]

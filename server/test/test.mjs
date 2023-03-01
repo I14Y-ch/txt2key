@@ -46,7 +46,7 @@ describe('OpenAI', function () {
                 });
             }))
             let fileContent = JSON.stringify(allResponses.map(r => r.data), null, 4)
-            await fs.writeFile(path.resolve(`${__dirname}/../../database/responses.json`), fileContent, err => {
+            await fs.writeFile(path.resolve(`${__dirname}/../database/responses.json`), fileContent, err => {
                 if (err) {
                     console.error(err);
                 }
