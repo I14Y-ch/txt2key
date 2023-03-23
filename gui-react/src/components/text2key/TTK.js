@@ -142,8 +142,8 @@ function TTK() {
     const [data, setData] = useState(null);
     useEffect(() => {
         const update = async () => {
-            let res = await API.queryChatGPT();
-            setData(res)
+            // let res = await API.queryChatGPT();
+            // setData(res)
         }
         update();
     }, [])
@@ -154,16 +154,16 @@ function TTK() {
               flex-direction: column;
               align-items: center;
               justify-content: center;
-              color: #20b2aa;
-              :hover {
-                color: #2e8b57;
-              }
             `}
         >
             <div>
-                {JSON.stringify(new String(data?.data?.choices[0]?.text).trim())}
-            </div>
-            <div>
+                <TextField
+                    id="outlined-basic"
+                    label="Outlined"
+                    variant="outlined"
+                    fullWidth
+                    value={"Lorem ipsum dolor sit amen"}
+                />
                 <Autocomplete
                     disablePortal
                     id="combo-box-demo"
