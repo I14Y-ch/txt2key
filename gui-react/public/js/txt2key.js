@@ -2,19 +2,35 @@
 
 function run(){
     window.onload = function (){
+        /* Get the config from the global window object */
+        const config = window["txt2key"];
+        console.log("txt2key plugin has been initialized with the following config:", {
+            config
+        })
+
         const source = document.body;
         source.addEventListener("copy", (event) => {
             const selection = document.getSelection();
             event.clipboardData.setData("text/plain", selection.toString());
             event.preventDefault();
+
+            /* Perform the request to our API */
+            const output = undefined;
             console.log("copied following value:", {
                 input: selection.toString(),
-                output: undefined
+                output
             })
+
+            /* Broadcast the event to the host so that the UI can be updated */
+            window.dispatchEvent(
+                new CustomEvent("txt2key", { detail: {
+                    config, selection
+                }})
+            );
 
             const nodeId = "txt2key"
             const txt2keyNode = document.getElementById(nodeId);
-            const css = `position: absolute; top: 0; left: 0; margin: 20; background: rgba(255, 255, 255, 1); color: black; padding: 15px; opacity: 0.5`
+            const css = `position: absolute; top: ${config.css.top}; left: ${config.css.left}; bottom: ${config.css.bottom}; right: ${config.css.right}; margin: 20px; background: rgba(255, 255, 255, 1); color: black; padding: 15px; opacity: 0.5`
             const content = `
                     <div class="txt2key-content" style="${css}">
                         <h4>TXT2KEY Co-Pilot</h4>

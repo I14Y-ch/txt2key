@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <title>Your Website</title>
   <!-- txt2key plugin start -->
-  <script type="application/javascript" src="/js/txt2key.js"></script>
+    <script>
+        function setupTxt2Key(){
+            window["txt2key"] = {
+                version: "0.0.1",
+                css: {
+                    top: 0, left: 0, bottom: "inherit", right: "inherit"
+                }
+            }
+        }
+    </script>
+    <script type="application/javascript" src="https://govtech2023-text2key-qtyt.vercel.app/js/txt2key.js" onload="setupTxt2Key()"></script>
   <!-- txt2key plugin end -->
 </head>
 <body>
