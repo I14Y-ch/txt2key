@@ -9,14 +9,17 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { css } from '@emotion/react';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
+import {Button} from "@mui/material";
 
 function TTK() {
-    const [keywords, setKeywords] = useState(null);
+    const [keywords, setKeywords] = useState([]);
+    const [keysValue, setKeysValue] = useState("");
+
     useEffect(() => {
         function onTxt2KeyEvent(){
             window.addEventListener("txt2key", function (event) {
                 console.log("got txt2key event", event);
-                const newKeywords = event.detail.selection.toString().split(" ").map(k => k.trim());
+                const newKeywords = event.detail.data.toString().split(" ").map(k => k.trim());
                 setKeywords(newKeywords)
             });
         }
@@ -37,7 +40,7 @@ function TTK() {
               justify-content: center;
             `}
         >
-            <div>
+            <div style={{minWidth: "50vw", maxWidth: "800px"}}>
                 <TextField
                     id="outlined-basic"
                     label="Title"
@@ -51,6 +54,8 @@ function TTK() {
                     label="Description"
                     variant="outlined"
                     fullWidth
+                    multiline
+                    rows={4}
                     defaultValue={"Lorem ipsum dolor sit amen"}
                 />
                 <Box mt={2}/>
@@ -59,6 +64,8 @@ function TTK() {
                     label="Topics"
                     variant="outlined"
                     fullWidth
+                    multiline
+                    rows={4}
                     defaultValue={"Lorem ipsum dolor sit amen"}
                 />
                 <Box mt={2}/>
@@ -67,8 +74,23 @@ function TTK() {
                     label="Publisher"
                     variant="outlined"
                     fullWidth
+                    multiline
+                    rows={2}
                     defaultValue={"Lorem ipsum dolor sit amen"}
                 />
+                <Box mt={2}/>
+                <Button fullWidth onClick={()=>{
+                    /* Broadcast the event to the host so that the UI can be updated */
+                    window.dispatchEvent(
+                        new CustomEvent("txt2key", { detail: {
+                                type: "request",
+                                data: {
+                                    info: "Get the keys for a given text",
+                                    text: "My text"
+                                }
+                            }})
+                    );
+                }}>Extract Keys</Button>
                 <Box mt={2}/>
                 <Autocomplete
                     id="combo-box-demo"
@@ -81,8 +103,11 @@ function TTK() {
                         }
                     })}
                     sx={{ width: 300 }}
-                    open={true}
                     disablePortal={true}
+                    value={keysValue}
+                    onChange={(event, value, reason, details)=>{
+                        setKeysValue(value)
+                    }}
                     renderInput={(params) => <TextField {...params} label="Intellikeys" />}
                 />
             </div>
