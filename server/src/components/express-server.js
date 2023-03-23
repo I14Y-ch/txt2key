@@ -2,9 +2,10 @@ import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-d
 dotenv.config()
 import express from "express"
 import * as api from "./api.mjs"
+import cors from "cors"
 const app = express()
 const port = process.env.PORT || 3000
-
+app.use(cors())
 app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Hello World!')
