@@ -14,4 +14,4 @@ Txt2key ist ein experimentelles Projekt. Entstanden ist der Dienst am GovTech-Ha
 
 ## Kontakt
 
-Bei Rückfragen: [Mathias Born](this@borniert.com), +41 76 431 24 15
+Bei Rückfragen: [Mathias Born](mailto:this@borniert.com), +41 76 431 24 15
