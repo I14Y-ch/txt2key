@@ -159,11 +159,36 @@ function TTK() {
             <div>
                 <TextField
                     id="outlined-basic"
-                    label="Outlined"
+                    label="Title"
                     variant="outlined"
                     fullWidth
-                    value={"Lorem ipsum dolor sit amen"}
+                    defaultValue={"Lorem ipsum dolor sit amen"}
                 />
+                <Box mt={2}/>
+                <TextField
+                    id="outlined-basic"
+                    label="Description"
+                    variant="outlined"
+                    fullWidth
+                    defaultValue={"Lorem ipsum dolor sit amen"}
+                />
+                <Box mt={2}/>
+                <TextField
+                    id="outlined-basic"
+                    label="Topics"
+                    variant="outlined"
+                    fullWidth
+                    defaultValue={"Lorem ipsum dolor sit amen"}
+                />
+                <Box mt={2}/>
+                <TextField
+                    id="outlined-basic"
+                    label="Publisher"
+                    variant="outlined"
+                    fullWidth
+                    defaultValue={"Lorem ipsum dolor sit amen"}
+                />
+                <Box mt={2}/>
                 <Autocomplete
                     disablePortal
                     id="combo-box-demo"
