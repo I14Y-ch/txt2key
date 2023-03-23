@@ -11,3 +11,7 @@ Txt2key ist ein experimentelles Projekt. Entstanden ist der Dienst am GovTech-Ha
 ## Public API
 
 - [Text2Key Api](http://text2key-api.dcadhha0gtfscbce.germanywestcentral.azurecontainer.io/swagger)
+
+## Kontakt
+
+Bei Rückfragen: [Mathias Born](this@borniert.com), +41 76 431 24 15
