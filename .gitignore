@@ -77,3 +77,4 @@ _[Ss]cripts
 .vs/
 
 .vscode
+.DS_Store
