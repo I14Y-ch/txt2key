@@ -8,18 +8,18 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 
 app.MapPost("/keywords", async (HttpContext httpContext) =>
 {
     var postBody = await httpContext.Request.ReadFromJsonAsync<Txt2KeyRequest>();
     using var httpClient = new HttpClient();
-    var yakeResponse = await httpClient.PostAsJsonAsync("http://192.168.56.101:5000/yake/", new YakeRequest("de", 1, 30, postBody.title + " " + postBody.description));
+    var yakeResponse = await httpClient.PostAsJsonAsync("http://yake-for-text2key.dpehejbsfqaxhqbs.germanywestcentral.azurecontainer.io:5000/yake/", new YakeRequest("de", 1, 30, postBody.title + " " + postBody.description));
     if (!yakeResponse.IsSuccessStatusCode)
     {
         return Results.Problem();

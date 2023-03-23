@@ -7,3 +7,7 @@ Txt2key ist ein experimentelles Projekt. Entstanden ist der Dienst am GovTech-Ha
 ## Datengrundlagen
 
 - [Export von Opendata.swiss](https://wortaholic.ch/div/opendataswiss_keywords_descriptions_20230307_15-33-57.zip)
+
+## Public API
+
+- [Text2Key Api](http://text2key-api.dcadhha0gtfscbce.germanywestcentral.azurecontainer.io/swagger)
