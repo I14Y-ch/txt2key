@@ -5,7 +5,7 @@ function run(){
         const source = document.body;
         source.addEventListener("copy", (event) => {
             const selection = document.getSelection();
-            event.clipboardData.setData("text/plain", selection.toString().toUpperCase());
+            event.clipboardData.setData("text/plain", selection.toString());
             event.preventDefault();
             console.log("copied following value:", {
                 input: selection.toString(),
@@ -14,10 +14,13 @@ function run(){
 
             const nodeId = "txt2key"
             const txt2keyNode = document.getElementById(nodeId);
-            const css = `position: absolute; top: 0; left: 0; margin: 20; background: rgba(255, 255, 255, 1); color: black;`
+            const css = `position: absolute; top: 0; left: 0; margin: 20; background: rgba(255, 255, 255, 1); color: black; padding: 15px; opacity: 0.5`
             const content = `
                     <div class="txt2key-content" style="${css}">
-                        chat gpt answer for ${selection.toString()}
+                        <h4>TXT2KEY Co-Pilot</h4>
+                        <div>
+                            chat gpt answer for ${selection.toString()}
+                        </div>
                     </div>
                 `
             if(txt2keyNode){
