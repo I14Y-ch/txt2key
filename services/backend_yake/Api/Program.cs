@@ -49,7 +49,7 @@ app.MapPost("/keywords", async (HttpContext httpContext) =>
     var results = await Task.WhenAll(translateTasks);
 
     return Results.Json(results.SelectMany (result => result).ToArray ());
-}).WithOpenApi().Accepts<Txt2KeyRequest>("application/json");
+}).WithOpenApi().Accepts<Txt2KeyRequest>("application/json").Produces<Txt2KeyResult>();
 
 app.MapMethods("/keywords", new[] { "OPTIONS" }, (HttpContext httpContext) => Results.Ok()).ExcludeFromDescription();
 
