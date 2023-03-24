@@ -1,9 +1,15 @@
+using Api;
+using CognitiveServices.Translator;
+using CognitiveServices.Translator.Extension;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCognitiveServicesTranslator(builder.Configuration);
+builder.Services.AddScoped<ITranslator, AzureTranslator>();
 
 var app = builder.Build();
 
@@ -14,9 +20,9 @@ var app = builder.Build();
     app.UseSwaggerUI();
 //}
 
-
 app.MapPost("/keywords", async (HttpContext httpContext) =>
 {
+    var translator = httpContext.RequestServices.GetService<ITranslator>()!;
     var postBody = await httpContext.Request.ReadFromJsonAsync<Txt2KeyRequest>();
     if (postBody == null)
     {
@@ -35,10 +41,14 @@ app.MapPost("/keywords", async (HttpContext httpContext) =>
 
     var yakeResult = await yakeResponse.Content.ReadFromJsonAsync<YakeResult[]>();
 
-    return Results.Json(yakeResult!
+    var translateTasks = yakeResult!
         .Where(result => result.score < 0.15)
         .Select(result => new Txt2KeyResult(result.ngram, postBody.language))
-        .ToArray());
+        .Select(result => translator.TranslateResult(result));
+
+    var results = await Task.WhenAll(translateTasks);
+
+    return Results.Json(results.SelectMany (result => result).ToArray ());
 }).WithOpenApi().Accepts<Txt2KeyRequest>("application/json");
 
 app.MapMethods("/keywords", new[] { "OPTIONS" }, (HttpContext httpContext) => Results.Ok()).ExcludeFromDescription();
