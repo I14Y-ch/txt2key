@@ -18,28 +18,49 @@ function TTK() {
     const [rake, setRake] = useState(null);
     const [gpt, setGPT] = useState(null);
     const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingGPT, setIsLoadingGPT] = useState(false)
+    const [isLoadingRAKE, setIsLoadingRake] = useState(false)
     const [form, setForm] = useState({
-        title: "Aare-Boote",
-        description: "How many boats are on the Aare river.",
-        topics: "Nature, Boats, Water",
-        publisher: "Mario Rossi"
+        title: "Swiss Standard Classification of Occupations CH-ISCO-19 v.1.1",
+        description: "The Swiss Standard Classification of Occupations CH-ISCO-19 continues to use the first four levels of the International Standard Classification of Occupations ISCO-08 and includes an additional fifth level to take account of the particularities of the labour market in Switzerland. It also contains the occupation titles attributed to each category. These occupational titles group together the occupations most often mentioned in FSO surveys, those consulted by professional and managerial associations and the official titles listed by the State Secretariat for Education, Research and Innovation (SERI). This list is updated regularly.",
+        topics: "Labour, Official statistics",
+        publisher: "Federal Statistical Office"
     });
 
     useEffect(() => {
         function onTxt2KeyEvent(){
             window.addEventListener("txt2key", function (event) {
-                if(event.detail.type === "response"){
+                if(event.detail.type === "response" && event.detail.complete){
                     console.log("got txt2key response event", event);
                     setIsLoading(false);
                     try {
                         let gpt = event.detail.data.filter(d => d.type === "gpt")[0].data.keywords;
                         setGPT(gpt)
+                        setIsLoadingGPT(false)
                     } catch (e){
                         console.error("error", e);
                     }
                     try {
                         let rake = event.detail.data.filter(d => d.type === "rake")[0].data;
                         setRake(rake)
+                        setIsLoadingRake(false)
+                    } catch (e){
+                        console.error("error", e);
+                    }
+                }
+                if(event.detail.type === "response" && event.detail.complete === false){
+                    console.log("got txt2key partial response event", event);
+                    try {
+                        let gpt = event.detail.data.filter(d => d.type === "gpt")[0].data.keywords;
+                        setGPT(gpt)
+                        setIsLoadingGPT(false)
+                    } catch (e){
+                        console.error("error", e);
+                    }
+                    try {
+                        let rake = event.detail.data.filter(d => d.type === "rake")[0].data;
+                        setRake(rake)
+                        setIsLoadingRake(false)
                     } catch (e){
                         console.error("error", e);
                     }
@@ -148,6 +169,8 @@ function TTK() {
                             <LoadingButton  loading={isLoading} fullWidth onClick={()=>{
                                 /* Broadcast the event to the host so that the UI can be updated */
                                 setIsLoading(true)
+                                setIsLoadingRake(true)
+                                setIsLoadingGPT(true)
                                 window.dispatchEvent(
                                     new CustomEvent("txt2key", { detail: {
                                             type: "request",
@@ -177,7 +200,7 @@ function TTK() {
                                 RAKE
                             </Typography>
                             {
-                                isLoading ? <LinearProgress variant={"indeterminate"} /> : (
+                                isLoadingRAKE ? <LinearProgress variant={"indeterminate"} /> : (
                                     <Typography variant={"body1"}>
                                         {
                                             (()=>{
@@ -198,7 +221,7 @@ function TTK() {
                                 GPT
                             </Typography>
                             {
-                                isLoading ? <LinearProgress variant={"indeterminate"} />  : (
+                                isLoadingGPT ? <LinearProgress variant={"indeterminate"} />  : (
                                     <Typography variant={"body1"}>
                                         {
                                             (()=>{

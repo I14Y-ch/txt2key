@@ -48,11 +48,19 @@ const api = {
     }
 }
 function run(){
+    function dispatchPartial(config, data){
+        /* Broadcast the event to the host so that the UI can be updated */
+        window.dispatchEvent(
+            new CustomEvent("txt2key", { detail: {
+                    config, data, type: "response", complete: false
+                }})
+        );
+    }
     function dispatchTxt2KeyEvent(config, data){
         /* Broadcast the event to the host so that the UI can be updated */
         window.dispatchEvent(
             new CustomEvent("txt2key", { detail: {
-                    config, data, type: "response"
+                    config, data, type: "response", complete: true
                 }})
         );
 
@@ -73,7 +81,8 @@ function run(){
             console.error("error", e);
         }
 
-        const content = `
+        if(config.modes.includes("clipboard")){
+            const content = `
                     <div class="txt2key-content" style="${css}">
                         <h4>TXT2KEY Assistant</h4>
                         <div>
@@ -86,13 +95,14 @@ function run(){
                         </div>
                     </div>
                 `
-        if(txt2keyNode){
-            txt2keyNode.innerHTML = content;
-        } else {
-            const txt2keyNode = document.createElement("div");
-            txt2keyNode.id = nodeId;
-            txt2keyNode.innerHTML = content
-            document.body.appendChild(txt2keyNode)
+            if(txt2keyNode){
+                txt2keyNode.innerHTML = content;
+            } else {
+                const txt2keyNode = document.createElement("div");
+                txt2keyNode.id = nodeId;
+                txt2keyNode.innerHTML = content
+                document.body.appendChild(txt2keyNode)
+            }
         }
     }
     async function onText2KeyRequest(config, data){
@@ -100,14 +110,18 @@ function run(){
         let responses = await Promise.all([
             api.queryChatGPT(data.form)
                 .then(async (response) => {
-                    return {data: await response.json(), type: "gpt"}
+                    let obj = {data: await response.json(), type: "gpt"}
+                    dispatchPartial(config, [obj])
+                    return obj;
                 }).catch(e => {
                 console.error("queryChatGPT -could not fetch the keys", e);
                 return e;
             }),
             api.queryRAKE(data.form)
                 .then(async (response) => {
-                    return {data: await response.json(), type: "rake"}
+                    let obj = {data: await response.json(), type: "rake"}
+                    dispatchPartial(config, [obj])
+                    return obj;
                 }).catch(e => {
                 console.error("queryRAKE - could not fetch the keys", e);
                 return e;
