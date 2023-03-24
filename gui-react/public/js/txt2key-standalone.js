@@ -50,7 +50,7 @@ function run(){
     function dispatchTxt2KeyEvent(config, data){
         const nodeId = "txt2key"
         const txt2keyNode = document.getElementById(nodeId);
-        const css = `position: absolute; top: ${config.css.top}; left: ${config.css.left}; bottom: ${config.css.bottom}; right: ${config.css.right}; margin: 20px; background: rgba(255, 255, 255, 1); color: black; padding: 15px; opacity: 0.5`
+        const css = `position: fixed; top: ${config.css.top}; left: ${config.css.left}; bottom: ${config.css.bottom}; right: ${config.css.right}; margin: 20px; background: rgba(255, 255, 255, 1); color: black; padding: 15px; opacity: 0.85`
 
         const content = `
                     <div class="txt2key-content" style="${css}">
