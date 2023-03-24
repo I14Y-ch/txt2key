@@ -212,42 +212,64 @@ function TTK() {
                                 isLoadingRAKE ? <LinearProgress variant={"indeterminate"} /> : (
                                     <div style={{display: "flex", flexDirection: "row", flex: 1}}>
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
-                                            <Typography variant={"h6"}>EN</Typography>
+                                            <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>EN</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(rake || []).filter(e => e.language === "en").map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(rake || []).filter(e => e.language.startsWith("en")).map((e)=>{return (<div>{e.keyword}</div>)})}
                                             </div>
                                        </div>
-                                        <div className={"col"} style={{display: "flex", flex: 1}}>
-                                            <Typography variant={"h6"}>DE</Typography>
+                                        <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
+                                            <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>DE</Typography>
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                {(rake || []).filter(e => e.language.startsWith("de")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                            </div>
                                         </div>
-                                        <div className={"col"} style={{display: "flex", flex: 1}}>
-                                            <Typography variant={"h6"}>FR</Typography>
+                                        <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
+                                            <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>FR</Typography>
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                {(rake || []).filter(e => e.language.startsWith("fr")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                            </div>
                                         </div>
-                                        <div className={"col"} style={{display: "flex", flex: 1}}>
-                                            <Typography variant={"h6"}>IT</Typography>
+                                        <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
+                                            <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>IT</Typography>
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                {(rake || []).filter(e => e.language.startsWith("it")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                            </div>
                                         </div>
                                     </div>
                                 )
                             }
                             <Divider style={{margin: "15px"}}></Divider>
                             <Typography variant={"h6"}>
-                                GPT
+                                Chat-GPT
                             </Typography>
                             {
                                 isLoadingGPT ? <LinearProgress variant={"indeterminate"} />  : (
-                                    <Typography variant={"body1"}>
-                                        {
-                                            (()=>{
-                                                try {
-                                                    if(gpt){
-                                                        return gpt.map(d => d.keyword).join(", ")
-                                                    }
-                                                } catch (e){
-                                                    return e.message
-                                                }
-                                            })()
-                                        }
-                                    </Typography>
+                                    <div style={{display: "flex", flexDirection: "row", flex: 1}}>
+                                        <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
+                                            <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>EN</Typography>
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                {(gpt || []).filter(e => e.language.startsWith("en")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                            </div>
+                                        </div>
+                                        <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
+                                            <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>DE</Typography>
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                {(gpt || []).filter(e => e.language.startsWith("de")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                            </div>
+                                        </div>
+                                        <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
+                                            <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>FR</Typography>
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                {(gpt || []).filter(e => e.language.startsWith("fr")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                            </div>
+                                        </div>
+                                        <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
+                                            <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>IT</Typography>
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                {(gpt || []).filter(e => e.language.startsWith("it")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                            </div>
+                                        </div>
+                                    </div>
                                 )
                             }
                         </div>
