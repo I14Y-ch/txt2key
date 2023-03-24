@@ -73,12 +73,12 @@ function run(){
         try {
             gpt = data.filter(d => d.type === "gpt")[0].data.keywords;
         } catch (e){
-            console.error("error", e);
+            console.warn("error", e);
         }
         try {
             rake = data.filter(d => d.type === "rake")[0].data;
         } catch (e){
-            console.error("error", e);
+            console.warn("error", e);
         }
 
         if(config.modes.includes("clipboard")){
@@ -86,11 +86,11 @@ function run(){
                     <div class="txt2key-content" style="${css}">
                         <h4>TXT2KEY Assistant</h4>
                         <div>
-                             rake:
+                             Rapid Key Extraction:
                             ${rake.map(d => d.keyword).join(", ")}
                         </div>
                         <div>
-                             gpt:
+                             Chat-GPT:
                             ${gpt.map(d => d.keyword).join(", ")}
                         </div>
                     </div>

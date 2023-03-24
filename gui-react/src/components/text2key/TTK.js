@@ -3,24 +3,13 @@ import {useEffect, useState} from "react";
 import API from "./API"
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
 import {Button, Divider, Typography} from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
-import CircularProgress from '@mui/material/CircularProgress';
 import LinearProgress from '@mui/material/LinearProgress';
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 
 
 function TTK() {
@@ -41,7 +30,6 @@ function TTK() {
             window.addEventListener("txt2key", function (event) {
                 if(event.detail.type === "response" && event.detail.complete){
                     console.log("got txt2key response event", event);
-                    setIsLoading(false);
                     try {
                         let gpt = event.detail.data.filter(d => d.type === "gpt")[0].data.keywords;
                         setGPT(gpt)
@@ -56,6 +44,7 @@ function TTK() {
                     } catch (e){
                         console.warn("error", e);
                     }
+                    setIsLoading(false);
                 }
                 if(event.detail.type === "response" && event.detail.complete === false){
                     console.log("got txt2key partial response event", event);
@@ -133,7 +122,7 @@ function TTK() {
                                 variant="outlined"
                                 fullWidth
                                 multiline
-                                rows={4}
+                                rows={16}
                                 value={form.description}
                                 onChange={(event)=>{
                                     setForm({
