@@ -4,6 +4,7 @@ using Api.TermDatClient;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Collections.Concurrent;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,32 +61,36 @@ app.MapPost("/keywords", async (HttpContext httpContext) =>
         .Select(result => new Txt2KeyResult(result.ngram, request.language))
         .Select(result => translator.TranslateResult(result));
 
-    var taskResult = await Task.WhenAll(translateTasks);
-    var results = taskResult.SelectMany(x => x);
+    var termDatResults = new ConcurrentBag<Txt2KeyResult>();
 
-    foreach (var item in filteredYakeResult)
+    Parallel.ForEach(filteredYakeResult, async item =>
     {
-        var termDatSearchResponse = await termDatClient.VSearchAsync(new[] { 1110, 102, 11446, 10426 }, new[] { 1, 2, 24, 3, 4, 22, 5, 6, 7, 8, 23, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 }, null, null, null, null, null, null, null, null, null, null, null,  yakeClient.language, null,  yakeClient.language, item.ngram, ReturnType.Summary, "2");
-        if(termDatSearchResponse.Result.Count <= 0)
+        var termDatSearchResponse = await termDatClient.VSearchAsync(new[] { 1110, 102, 11446, 10426 }, new[] { 1, 2, 24, 3, 4, 22, 5, 6, 7, 8, 23, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 }, null, null, null, null, null, null, null, null, null, null, null, yakeClient.language, null, yakeClient.language, item.ngram, ReturnType.Summary, "2");
+        if (termDatSearchResponse.Result.Count <= 0)
         {
-            continue;
+            return;
         }
         var termDatEntryId = termDatSearchResponse.Result.First().Id;
-    
+
 
         var termDatEntryResponseDeEn = await termDatClient.VEntryAsync("de", "en", new[] { termDatEntryId }, "2");
         var termDatEntryResponsFrIt = await termDatClient.VEntryAsync("fr", "it", new[] { termDatEntryId }, "2");
-        var languageDetailsArray = termDatEntryResponseDeEn.Result.FirstOrDefault().LanguageDetails.ToArray();
-        var fullResponse = languageDetailsArray.Concat(termDatEntryResponsFrIt.Result.FirstOrDefault().LanguageDetails.ToArray())
-                            .Where (x => !string.IsNullOrEmpty(x.Name))
+        var languageDetailsArrayDeEn = termDatEntryResponseDeEn.Result.FirstOrDefault()?.LanguageDetails.ToArray() ?? Array.Empty<EntryLanguageDetail>();
+        var languageDetailsArrayFrIt = termDatEntryResponsFrIt.Result.FirstOrDefault()?.LanguageDetails.ToArray() ?? Array.Empty<EntryLanguageDetail>();
+        var fullResponse = languageDetailsArrayDeEn.Concat(languageDetailsArrayFrIt)
+                            .Where(x => !string.IsNullOrEmpty(x.Name))
                             .GroupBy(x => x.Sequence)
                             .Where(x => x.Any(y => y.Name.Contains(item.ngram, StringComparison.InvariantCultureIgnoreCase)))
                             .SelectMany(x => x.Select(y => new Txt2KeyResult(y.Name, y.LanguageIsoCode)));
-        results = results.Concat(fullResponse);
-    }
+        
+        foreach (var result in fullResponse)
+            termDatResults.Add(result);
+    });
 
+    var taskResult = await Task.WhenAll(translateTasks);
+    var results = taskResult.SelectMany(x => x);
 
-    return Results.Json(results.ToArray());
+    return Results.Json(results.Concat (termDatResults).ToArray());
 }).WithOpenApi().Accepts<Txt2KeyRequest>("application/json").Produces<Txt2KeyResult>();
 
 
