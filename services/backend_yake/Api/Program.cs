@@ -1,5 +1,4 @@
 using Api;
-using CognitiveServices.Translator;
 using CognitiveServices.Translator.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCognitiveServicesTranslator(builder.Configuration);
+builder.Services.AddScoped<YakeClient>();
 builder.Services.AddScoped<ITranslator, AzureTranslator>();
 
 var app = builder.Build();
@@ -22,28 +22,28 @@ var app = builder.Build();
 
 app.MapPost("/keywords", async (HttpContext httpContext) =>
 {
-    var translator = httpContext.RequestServices.GetService<ITranslator>()!;
-    var postBody = await httpContext.Request.ReadFromJsonAsync<Txt2KeyRequest>();
-    if (postBody == null)
+    var yakeClient = httpContext.RequestServices.GetRequiredService<YakeClient>();
+    var translator = httpContext.RequestServices.GetRequiredService<ITranslator>();
+
+    var request = await httpContext.Request.ReadFromJsonAsync<Txt2KeyRequest>();
+    if (request == null)
     {
         return Results.BadRequest("Body must not be null");
     }
 
-    var languageForYake = postBody.language.Split('-').First();
-    using var httpClient = new HttpClient();
-    var yakeResponse = await httpClient.PostAsJsonAsync("http://yake-for-text2key.dpehejbsfqaxhqbs.germanywestcentral.azurecontainer.io:5000/yake/",
-        new YakeRequest(languageForYake, 1, 30, postBody.title + " " + postBody.description));
-
-    if (!yakeResponse.IsSuccessStatusCode)
+    IEnumerable<YakeResult> yakeResult;
+    try
     {
-        return Results.Problem("Yake API returned statuscode: " + yakeResponse.StatusCode);
+         yakeResult = await yakeClient.GetResults(request);
     }
-
-    var yakeResult = await yakeResponse.Content.ReadFromJsonAsync<YakeResult[]>();
+    catch (YakeException e)
+    {
+        return Results.Problem(e.Message);
+    }
 
     var translateTasks = yakeResult!
         .Where(result => result.score < 0.15)
-        .Select(result => new Txt2KeyResult(result.ngram, postBody.language))
+        .Select(result => new Txt2KeyResult(result.ngram, request.language))
         .Select(result => translator.TranslateResult(result));
 
     var results = await Task.WhenAll(translateTasks);
