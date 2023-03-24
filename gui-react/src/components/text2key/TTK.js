@@ -214,25 +214,25 @@ function TTK() {
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
                                             <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>EN</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(rake || []).filter(e => e.language.startsWith("en")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(rake || []).filter(e => e.language.startsWith("en")).map((e, k)=>{return (<div key={k}>{e.keyword}</div>)})}
                                             </div>
                                        </div>
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
                                             <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>DE</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(rake || []).filter(e => e.language.startsWith("de")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(rake || []).filter(e => e.language.startsWith("de")).map((e, k)=>{return (<div key={k}>{e.keyword}</div>)})}
                                             </div>
                                         </div>
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
                                             <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>FR</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(rake || []).filter(e => e.language.startsWith("fr")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(rake || []).filter(e => e.language.startsWith("fr")).map((e, k)=>{return (<div key={k}>{e.keyword}</div>)})}
                                             </div>
                                         </div>
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
                                             <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>IT</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(rake || []).filter(e => e.language.startsWith("it")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(rake || []).filter(e => e.language.startsWith("it")).map((e, k)=>{return (<div key={k}>{e.keyword}</div>)})}
                                             </div>
                                         </div>
                                     </div>
@@ -248,25 +248,25 @@ function TTK() {
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
                                             <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>EN</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(gpt || []).filter(e => e.language.startsWith("en")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(gpt || []).filter(e => e.language.startsWith("en")).map((e, k)=>{return (<div key={k}>{e.keyword}</div>)})}
                                             </div>
                                         </div>
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
                                             <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>DE</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(gpt || []).filter(e => e.language.startsWith("de")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(gpt || []).filter(e => e.language.startsWith("de")).map((e, k)=>{return (<div key={k}>{e.keyword}</div>)})}
                                             </div>
                                         </div>
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
                                             <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>FR</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(gpt || []).filter(e => e.language.startsWith("fr")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(gpt || []).filter(e => e.language.startsWith("fr")).map((e, k)=>{return (<div key={k}>{e.keyword}</div>)})}
                                             </div>
                                         </div>
                                         <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
                                             <Typography variant={"h6"} style={{fontSize: "0.9rem"}}>IT</Typography>
                                             <div style={{display: "flex", flexDirection: "column"}}>
-                                                {(gpt || []).filter(e => e.language.startsWith("it")).map((e)=>{return (<div>{e.keyword}</div>)})}
+                                                {(gpt || []).filter(e => e.language.startsWith("it")).map((e, k)=>{return (<div key={k}>{e.keyword}</div>)})}
                                             </div>
                                         </div>
                                     </div>

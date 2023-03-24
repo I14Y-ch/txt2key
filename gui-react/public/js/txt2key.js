@@ -112,6 +112,8 @@ function run(){
                 .then(async (response) => {
                     let obj = {data: await response.json(), type: "gpt"}
                     dispatchPartial(config, [obj])
+                    /* Dispatch the clipboard event */
+                    dispatchTxt2KeyEvent(config, [obj])
                     return obj;
                 }).catch(e => {
                 console.error("queryChatGPT -could not fetch the keys", e);
@@ -121,6 +123,8 @@ function run(){
                 .then(async (response) => {
                     let obj = {data: await response.json(), type: "rake"}
                     dispatchPartial(config, [obj])
+                    /* Dispatch the clipboard event */
+                    dispatchTxt2KeyEvent(config, [obj])
                     return obj;
                 }).catch(e => {
                 console.error("queryRAKE - could not fetch the keys", e);
@@ -130,8 +134,6 @@ function run(){
         console.log("txt2key request - res", {
             responses
         })
-        /* Dispatch the event */
-        dispatchTxt2KeyEvent(config, responses)
     }
     window.onload = function (){
         /* Get the config from the global window object */
