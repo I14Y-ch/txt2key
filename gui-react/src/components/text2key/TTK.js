@@ -38,14 +38,14 @@ function TTK() {
                         setGPT(gpt)
                         setIsLoadingGPT(false)
                     } catch (e){
-                        console.error("error", e);
+                        console.warn("error", e);
                     }
                     try {
                         let rake = event.detail.data.filter(d => d.type === "rake")[0].data;
                         setRake(rake)
                         setIsLoadingRake(false)
                     } catch (e){
-                        console.error("error", e);
+                        console.warn("error", e);
                     }
                 }
                 if(event.detail.type === "response" && event.detail.complete === false){
@@ -55,14 +55,14 @@ function TTK() {
                         setGPT(gpt)
                         setIsLoadingGPT(false)
                     } catch (e){
-                        console.error("error", e);
+                        console.warn("error", e);
                     }
                     try {
                         let rake = event.detail.data.filter(d => d.type === "rake")[0].data;
                         setRake(rake)
                         setIsLoadingRake(false)
                     } catch (e){
-                        console.error("error", e);
+                        console.warn("error", e);
                     }
                 }
             });
