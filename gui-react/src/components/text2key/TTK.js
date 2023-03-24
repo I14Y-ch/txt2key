@@ -14,6 +14,15 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import LinearProgress from '@mui/material/LinearProgress';
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+
 function TTK() {
     const [rake, setRake] = useState(null);
     const [gpt, setGPT] = useState(null);
@@ -197,23 +206,27 @@ function TTK() {
                         <Box mt={5}/>
                         <div style={{minWidth: "40vw", maxWidth: "800px"}}>
                             <Typography variant={"h6"}>
-                                RAKE
+                                Rapid Key Extraction
                             </Typography>
                             {
                                 isLoadingRAKE ? <LinearProgress variant={"indeterminate"} /> : (
-                                    <Typography variant={"body1"}>
-                                        {
-                                            (()=>{
-                                                try {
-                                                    if(rake){
-                                                        return rake?.map(d => d.keyword).join(", ")
-                                                    }
-                                                } catch (e){
-                                                    return e.message
-                                                }
-                                            })()
-                                        }
-                                    </Typography>
+                                    <div style={{display: "flex", flexDirection: "row", flex: 1}}>
+                                        <div className={"col"} style={{display: "flex", flex: 1, flexDirection: "column"}}>
+                                            <Typography variant={"h6"}>EN</Typography>
+                                            <div style={{display: "flex", flexDirection: "column"}}>
+                                                {(rake || []).filter(e => e.language === "en").map((e)=>{return (<div>{e.keyword}</div>)})}
+                                            </div>
+                                       </div>
+                                        <div className={"col"} style={{display: "flex", flex: 1}}>
+                                            <Typography variant={"h6"}>DE</Typography>
+                                        </div>
+                                        <div className={"col"} style={{display: "flex", flex: 1}}>
+                                            <Typography variant={"h6"}>FR</Typography>
+                                        </div>
+                                        <div className={"col"} style={{display: "flex", flex: 1}}>
+                                            <Typography variant={"h6"}>IT</Typography>
+                                        </div>
+                                    </div>
                                 )
                             }
                             <Divider style={{margin: "15px"}}></Divider>
