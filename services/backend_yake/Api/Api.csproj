@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CognitiveServices.Translator.Client" Version="1.0.31" />
     <PackageReference Include="Microsoft.NET.Build.Containers" Version="0.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.*-*" />
