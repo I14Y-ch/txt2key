@@ -229,7 +229,7 @@ function TTK() {
                             }
                             <Divider style={{margin: "15px"}}></Divider>
                             <Typography variant={"h6"}>
-                                Chat-GPT
+                                OpenAI GPT 3.5
                             </Typography>
                             {
                                 isLoadingGPT ? <LinearProgress variant={"indeterminate"} />  : (
