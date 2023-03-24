@@ -132,26 +132,3 @@ func getKeywords(ctx context.Context, client *openai.Client, title, description,
 
 	return message.Keywords, nil
 }
-
-// func getKeywordsCompletion(client *openai.Client, title, description, publisher, topics string) ([]Keyword, error) {
-// 	promt := fmt.Sprintf("%s\n\nTitle: %s\n\nDescription: %s\n\nTopcis: %s\n\nPublisher: %s", prompt, title, description, topics, publisher)
-
-// 	fmt.Println(promt)
-
-// 	resp, err := client.CreateCompletion(
-// 		context.Background(),
-// 		openai.CompletionRequest{
-// 			Model:     openai.GPT3TextDavinci003,
-// 			Prompt:    promt,
-// 			MaxTokens: 1000,
-// 		},
-// 	)
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	fmt.Println(resp.Choices[0].Text)
-
-// 	return []Keyword{}, nil
-// }
