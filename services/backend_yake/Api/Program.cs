@@ -41,6 +41,8 @@ app.MapPost("/keywords", async (HttpContext httpContext) =>
         .ToArray());
 }).WithOpenApi().Accepts<Txt2KeyRequest>("application/json");
 
+app.MapMethods("/keywords", new[] { "OPTIONS" }, (HttpContext httpContext) => Results.Ok()).ExcludeFromDescription();
+
 app.Run();
 
 public record YakeRequest

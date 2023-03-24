@@ -10,7 +10,7 @@ Txt2key ist ein experimentelles Projekt. Entstanden ist der Dienst am GovTech-Ha
 
 ## Public API
 
-- [Text2Key Api](http://text2key-api.dcadhha0gtfscbce.germanywestcentral.azurecontainer.io/swagger)
+- [Text2Key Yake Backend Api](https://api20230324101937.azurewebsites.net/swagger)
 
 ## Kontakt
 
