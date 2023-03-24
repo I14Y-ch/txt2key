@@ -26,6 +26,7 @@ var app = builder.Build();
 
 app.MapPost("/keywords", async (HttpContext httpContext) =>
 {
+    var configuration = httpContext.RequestServices.GetRequiredService<IConfiguration>();
     var yakeClient = httpContext.RequestServices.GetRequiredService<YakeClient>();
     var translator = httpContext.RequestServices.GetRequiredService<ITranslator>();
 
@@ -45,7 +46,13 @@ app.MapPost("/keywords", async (HttpContext httpContext) =>
         return Results.Problem(e.Message);
     }
 
-    var filteredYakeResult = yakeResult.Where(x => x.score <= 0.15).ToList();
+    var blockList = configuration.GetValue<string>("BlockList")!.Split(',');
+
+    var filteredYakeResult = yakeResult
+        .Where(x => x.score <= 0.15)
+        .Where(result => result.ngram.Length > 3)
+        .Where(result => !blockList.Any(blocked => result.ngram.Contains(blocked, StringComparison.InvariantCultureIgnoreCase)))
+        .ToList();
 
     var termDatClient = new Client("https://api.termdat.bk.admin.ch", new HttpClient());
 
@@ -70,15 +77,16 @@ app.MapPost("/keywords", async (HttpContext httpContext) =>
         var termDatEntryResponsFrIt = await termDatClient.VEntryAsync("fr", "it", new[] { termDatEntryId }, "2");
         var languageDetailsArray = termDatEntryResponseDeEn.Result.FirstOrDefault().LanguageDetails.ToArray();
         var fullResponse = languageDetailsArray.Concat(termDatEntryResponsFrIt.Result.FirstOrDefault().LanguageDetails.ToArray())
+                            .Where (x => !string.IsNullOrEmpty(x.Name))
                             .GroupBy(x => x.Sequence)
-                            .Where(x => x.Any(y => y.Name.Contains(item.ngram, StringComparison.CurrentCultureIgnoreCase)))
+                            .Where(x => x.Any(y => y.Name.Contains(item.ngram, StringComparison.InvariantCultureIgnoreCase)))
                             .SelectMany(x => x.Select(y => new Txt2KeyResult(y.Name, y.LanguageIsoCode)));
         results = results.Concat(fullResponse);
     }
 
 
     return Results.Json(results.ToArray());
-}).WithOpenApi().Accepts<Txt2KeyRequest>("application/json");
+}).WithOpenApi().Accepts<Txt2KeyRequest>("application/json").Produces<Txt2KeyResult>();
 
 
 app.MapMethods("/keywords", new[] { "OPTIONS" }, (HttpContext httpContext) => Results.Ok()).ExcludeFromDescription();
