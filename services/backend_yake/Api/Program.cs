@@ -18,15 +18,27 @@ var app = builder.Build();
 app.MapPost("/keywords", async (HttpContext httpContext) =>
 {
     var postBody = await httpContext.Request.ReadFromJsonAsync<Txt2KeyRequest>();
+    if (postBody == null)
+    {
+        return Results.BadRequest("Body must not be null");
+    }
+
+    var languageForYake = postBody.language.Split('-').First();
     using var httpClient = new HttpClient();
-    var yakeResponse = await httpClient.PostAsJsonAsync("http://yake-for-text2key.dpehejbsfqaxhqbs.germanywestcentral.azurecontainer.io:5000/yake/", new YakeRequest("de", 1, 30, postBody.title + " " + postBody.description));
+    var yakeResponse = await httpClient.PostAsJsonAsync("http://yake-for-text2key.dpehejbsfqaxhqbs.germanywestcentral.azurecontainer.io:5000/yake/",
+        new YakeRequest(languageForYake, 1, 30, postBody.title + " " + postBody.description));
+
     if (!yakeResponse.IsSuccessStatusCode)
     {
-        return Results.Problem();
+        return Results.Problem("Yake API returned statuscode: " + yakeResponse.StatusCode);
     }
-    
+
     var yakeResult = await yakeResponse.Content.ReadFromJsonAsync<YakeResult[]>();
-    return Results.Json(yakeResult!.Where(result => result.score < 0.15).Select(result => new Txt2KeyResult(result.ngram, "de")).ToArray());
+
+    return Results.Json(yakeResult!
+        .Where(result => result.score < 0.15)
+        .Select(result => new Txt2KeyResult(result.ngram, postBody.language))
+        .ToArray());
 }).WithOpenApi().Accepts<Txt2KeyRequest>("application/json");
 
 app.Run();
@@ -57,5 +69,5 @@ public record Txt2KeyRequest
     string description,
     string[] topics,
     string publisher,
-    string? language = null
+    string language = "de"
 );
