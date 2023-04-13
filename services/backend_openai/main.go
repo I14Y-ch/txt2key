@@ -10,15 +10,12 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	openai "github.com/sashabaranov/go-openai"
 )
 
-const systemMessage = `You are a smart keyword extractor system.
-The user will give you information about a dataset which is part of a large catalogue of datasets.
-Given these informations, return a list of simple, general keywords that are relevant to the context of the dataset.
-Give exactly 5 keywords per language. The languages are german, english, italian and french. Make sure the keywords are the same across all languages. Use ISO language codes.
-The structure of the answer has to match the following JSON:
+// const prompt = "The following title, topics, publisher and description describes a dataset which is part of a large catalogue of datasets. Given the following information, please give a list of simple, general keywords that are relevant to the context of the description. Give the keywords in german, english, italian and french."
+const systemMessage = `The user will give you information about a dataset which is part of a large catalogue of datasets. Given these information, please give a list of simple, general keywords that are relevant to the context of the dataset. Return at least five keywords per language. Give the keywords in german, english, italian and french.
+Give the answer in a json that looks like this:
 
 {
   "keywords": [
@@ -26,10 +23,9 @@ The structure of the answer has to match the following JSON:
       "keyword": "",
       "language": ""
     },
-	// ...
+		// ...
   ]
-}
-`
+}`
 
 type RequestBody struct {
 	Title       string   `json:"title"`
@@ -61,11 +57,6 @@ func main() {
 	client := openai.NewClient(apiKey)
 
 	app := fiber.New()
-
-	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "*",
-	}))
 
 	app.Post("/keywords", func(c *fiber.Ctx) error {
 		var body RequestBody
@@ -132,3 +123,26 @@ func getKeywords(ctx context.Context, client *openai.Client, title, description,
 
 	return message.Keywords, nil
 }
+
+// func getKeywordsCompletion(client *openai.Client, title, description, publisher, topics string) ([]Keyword, error) {
+// 	promt := fmt.Sprintf("%s\n\nTitle: %s\n\nDescription: %s\n\nTopcis: %s\n\nPublisher: %s", prompt, title, description, topics, publisher)
+
+// 	fmt.Println(promt)
+
+// 	resp, err := client.CreateCompletion(
+// 		context.Background(),
+// 		openai.CompletionRequest{
+// 			Model:     openai.GPT3TextDavinci003,
+// 			Prompt:    promt,
+// 			MaxTokens: 1000,
+// 		},
+// 	)
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	fmt.Println(resp.Choices[0].Text)
+
+// 	return []Keyword{}, nil
+// }

@@ -1,5 +1,10 @@
 using Api;
 using CognitiveServices.Translator.Extension;
+using Api.TermDatClient;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Collections.Concurrent;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +27,7 @@ var app = builder.Build();
 
 app.MapPost("/keywords", async (HttpContext httpContext) =>
 {
+    var configuration = httpContext.RequestServices.GetRequiredService<IConfiguration>();
     var yakeClient = httpContext.RequestServices.GetRequiredService<YakeClient>();
     var translator = httpContext.RequestServices.GetRequiredService<ITranslator>();
 
@@ -41,15 +47,52 @@ app.MapPost("/keywords", async (HttpContext httpContext) =>
         return Results.Problem(e.Message);
     }
 
-    var translateTasks = yakeResult!
-        .Where(result => result.score < 0.15)
+    var blockList = configuration.GetValue<string>("BlockList")!.Split(',');
+
+    var filteredYakeResult = yakeResult
+        .Where(x => x.score <= 0.15)
+        .Where(result => result.ngram.Length > 3)
+        .Where(result => !blockList.Any(blocked => result.ngram.Contains(blocked, StringComparison.InvariantCultureIgnoreCase)))
+        .ToList();
+
+    var termDatClient = new Client("https://api.termdat.bk.admin.ch", new HttpClient());
+
+    var translateTasks = filteredYakeResult
         .Select(result => new Txt2KeyResult(result.ngram, request.language))
         .Select(result => translator.TranslateResult(result));
 
-    var results = await Task.WhenAll(translateTasks);
+    var termDatResults = new ConcurrentBag<Txt2KeyResult>();
 
-    return Results.Json(results.SelectMany (result => result).ToArray ());
+    Parallel.ForEach(filteredYakeResult, async item =>
+    {
+        var termDatSearchResponse = await termDatClient.VSearchAsync(new[] { 1110, 102, 11446, 10426 }, new[] { 1, 2, 24, 3, 4, 22, 5, 6, 7, 8, 23, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 }, null, null, null, null, null, null, null, null, null, null, null, yakeClient.language, null, yakeClient.language, item.ngram, ReturnType.Summary, "2");
+        if (termDatSearchResponse.Result.Count <= 0)
+        {
+            return;
+        }
+        var termDatEntryId = termDatSearchResponse.Result.First().Id;
+
+
+        var termDatEntryResponseDeEn = await termDatClient.VEntryAsync("de", "en", new[] { termDatEntryId }, "2");
+        var termDatEntryResponsFrIt = await termDatClient.VEntryAsync("fr", "it", new[] { termDatEntryId }, "2");
+        var languageDetailsArrayDeEn = termDatEntryResponseDeEn.Result.FirstOrDefault()?.LanguageDetails.ToArray() ?? Array.Empty<EntryLanguageDetail>();
+        var languageDetailsArrayFrIt = termDatEntryResponsFrIt.Result.FirstOrDefault()?.LanguageDetails.ToArray() ?? Array.Empty<EntryLanguageDetail>();
+        var fullResponse = languageDetailsArrayDeEn.Concat(languageDetailsArrayFrIt)
+                            .Where(x => !string.IsNullOrEmpty(x.Name))
+                            .GroupBy(x => x.Sequence)
+                            .Where(x => x.Any(y => y.Name.Contains(item.ngram, StringComparison.InvariantCultureIgnoreCase)))
+                            .SelectMany(x => x.Select(y => new Txt2KeyResult(y.Name, y.LanguageIsoCode)));
+        
+        foreach (var result in fullResponse)
+            termDatResults.Add(result);
+    });
+
+    var taskResult = await Task.WhenAll(translateTasks);
+    var results = taskResult.SelectMany(x => x);
+
+    return Results.Json(results.Concat (termDatResults).ToArray());
 }).WithOpenApi().Accepts<Txt2KeyRequest>("application/json").Produces<Txt2KeyResult>();
+
 
 app.MapMethods("/keywords", new[] { "OPTIONS" }, (HttpContext httpContext) => Results.Ok()).ExcludeFromDescription();
 
@@ -83,3 +126,30 @@ public record Txt2KeyRequest
     string publisher,
     string language = "de"
 );
+
+public record TermDatSearchRequest
+(
+    int[] collectionIds,
+    string inLanguageCode,
+    string searchTerm,
+    string returnType = "Summary"
+);
+
+public record TermDatSearchResponse
+(
+      int id,
+      string url,
+      TermDatStatus status,
+      TermDatReliability reliability,
+      TermDatOffice office,
+      TermDatCollection collection,
+      TermDatClassification classification,
+      TermDatHits[] hits
+);
+
+public record TermDatStatus(string code, string text);
+public record TermDatReliability(string code, string text);
+public record TermDatOffice(int id, string code,  string text);
+public record TermDatCollection(int it, string code, string text);
+public record TermDatClassification(int it, string code, string text);
+public record TermDatHits(string name0);

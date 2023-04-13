@@ -4,6 +4,7 @@ namespace Api
 {
     public class YakeClient
     {
+        public string language;
         public YakeClient(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -13,10 +14,10 @@ namespace Api
 
         public async Task<IEnumerable<YakeResult>> GetResults (Txt2KeyRequest request)
         {
-            var languageForYake = request.language.Split('-').First();
+            language = request.language.Split('-').First();
             using var httpClient = new HttpClient();
             var yakeResponse = await httpClient.PostAsJsonAsync(Configuration.GetValue<string>("YakeEndpoint"),
-                new YakeRequest(languageForYake, 1, 30, request.title + " " + request.description));
+                new YakeRequest(language, 1, 30, request.title + " " + request.description));
 
             if (!yakeResponse.IsSuccessStatusCode)
             {
