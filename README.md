@@ -2,7 +2,7 @@
 
 Txt2key ist ein automatischer Schlüsselwort-Generator. Er extrahiert aus Beschreibungstexten die passenden Schlüsselwörter und stellt diese mehrsprachig zur Verfügung. Txt2key kann einfach an bestehende Katalog-Seiten wie I14Y.ch angebunden werden. 
 
-Txt2key ist ein experimentelles Projekt. Entstanden ist der Dienst am GovTech-Hackathon vom 23. und 24. März 2023 in Zollikofen. 
+Txt2key ist ein experimentelles Projekt. Entstanden ist der Dienst am [GovTech-Hackathon](https://opendata.ch/events/govtech-hackathon/) vom 23. und 24. März 2023 in Zollikofen. 
 
 ## Datengrundlagen
 
@@ -14,7 +14,7 @@ Txt2key ist ein experimentelles Projekt. Entstanden ist der Dienst am GovTech-Ha
 
 ## Kontakt
 
-Bei Rückfragen: [Mathias Born](mailto:this@borniert.com), +41 76 431 24 15
+Bei Rückfragen: [Mathias Born](mailto:mathias.born@bfs.admin.ch)
 
 ## Live Demo
 
